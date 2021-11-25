@@ -7,6 +7,7 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 
 // import package here
+const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
   // our validation schema here
@@ -96,14 +97,23 @@ exports.login = async (req, res) => {
       });
     }
 
-    // code here
+    const data = {
+      id: userExist.id,
+      name: userExist.name,
+      email: userExist.email,
+      status: userExist.status
+    }
+
+    const SECRET_KEY = 'BebasApaSajaMateriAuthBatch28'
+
+    const token = jwt.sign(data, SECRET_KEY);
 
     res.status(200).send({
       status: "success...",
       data: {
         name: userExist.name,
         email: userExist.email,
-        // code here
+        token
       },
     });
   } catch (error) {

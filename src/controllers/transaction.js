@@ -4,6 +4,9 @@ exports.getTransactions = async (req, res) => {
     try {
 
         const data = await transaction.findAll({
+            where: {
+                idBuyer: req.user.id
+            },
             attributes: {
                 exclude: ['createdAt', 'updatedAt', 'idBuyer', 'idSeller', 'idProduct']
             },
@@ -34,6 +37,7 @@ exports.getTransactions = async (req, res) => {
 
         res.send({
             status: 'success',
+            user: req.user,
             data
         })
     } catch (error) {
